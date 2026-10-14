@@ -10,10 +10,10 @@ orientation = portrait
 fullscreen = 0
 
 # Android build settings
-android.api = 33
-android.minapi = 23
+android.api = 35
+android.minapi = 26
 android.ndk = 28c
-android.ndk_api = 23
+android.ndk_api = 26
 android.archs = arm64-v8a
 android.accept_sdk_license = True
 android.allow_backup = True
