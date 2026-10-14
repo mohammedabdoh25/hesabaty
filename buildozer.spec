@@ -12,7 +12,7 @@ fullscreen = 0
 # Android build settings
 android.api = 33
 android.minapi = 23
-android.ndk = 25b
+android.ndk = 28c
 android.ndk_api = 23
 android.archs = arm64-v8a
 android.accept_sdk_license = True
