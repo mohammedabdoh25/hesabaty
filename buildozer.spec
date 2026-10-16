@@ -5,14 +5,14 @@ package.domain = org.hesabati
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,db
 version = 0.1.0
-requirements = python3,kivy
+requirements = python3,kivy,sqlite3
 orientation = portrait
 fullscreen = 0
 
 # Android build settings
-android.api = 35
+android.api = 30
 android.minapi = 26
-android.ndk = 28c
+android.ndk = 25b
 android.ndk_api = 26
 android.archs = arm64-v8a
 android.accept_sdk_license = True
