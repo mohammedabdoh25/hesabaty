@@ -11,7 +11,7 @@ fullscreen = 0
 p4a.branch = develop
 
 # Android build settings
-android.api = 30
+android.api = 33
 android.minapi = 26
 android.ndk = 28c
 android.ndk_api = 26
