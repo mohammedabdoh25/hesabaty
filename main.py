@@ -20,7 +20,6 @@ from kivy.uix.textinput import TextInput
 
 
 APP_DIR = Path(__file__).resolve().parent
-DB_PATH = Path(App.get_running_app().user_data_dir if App.get_running_app() else APP_DIR) / "accounting.db"
 
 
 class Database:
@@ -216,7 +215,11 @@ class InvoiceScreen(BaseScreen):
     def save(self,*_):
         try:
             product=self.app.db.rows('SELECT * FROM products WHERE id=?',(int(float(self.iid.text)),))[0]
-            qty=float(self.qty.text or 1); price=float(self.price.text or product['sell_price'] if self.kind=='sale' else self.price.text or product['buy_price']); paid=float(self.paid.text or 0); cid=int(float(self.cid.text)) if self.cid.text else None
+            qty=float(self.qty.text or 1)
+            default_price = product['sell_price'] if self.kind == 'sale' else product['buy_price']
+            price=float(self.price.text) if self.price.text.strip() else float(default_price)
+            paid=float(self.paid.text or 0)
+            cid=int(float(self.cid.text)) if self.cid.text else None
             if self.kind=='sale' and product['stock']<qty: return self.toast('الكمية المطلوبة أكبر من المخزون')
             number=self.app.db.create_invoice(self.kind,product['id'],qty,price,cid,paid); self.toast(f'تم حفظ الفاتورة {number}')
         except (ValueError, IndexError): self.toast('تحقق من البيانات ومعرّف الصنف')
@@ -252,8 +255,9 @@ class ReportsScreen(BaseScreen):
 class AccountingApp(App):
     title='حساباتي - محاسبة'
     def build(self):
-        global DB_PATH
-        os.makedirs(self.user_data_dir, exist_ok=True); DB_PATH=Path(self.user_data_dir)/'accounting.db'; self.db=Database(DB_PATH)
+        os.makedirs(self.user_data_dir, exist_ok=True)
+        db_path = Path(self.user_data_dir) / 'accounting.db'
+        self.db = Database(db_path)
         sm=ScreenManager(); sm.add_widget(DashboardScreen(name='dashboard')); sm.add_widget(ProductsScreen(name='products')); sm.add_widget(ContactsScreen(name='contacts')); sm.add_widget(ExpensesScreen(name='expenses')); sm.add_widget(ReportsScreen(name='reports'))
         sale=InvoiceScreen(name='sale'); sale.kind='sale'; sale.title='فاتورة بيع'; sm.add_widget(sale); purchase=InvoiceScreen(name='purchase'); purchase.kind='purchase'; purchase.title='فاتورة شراء'; sm.add_widget(purchase)
         return sm
