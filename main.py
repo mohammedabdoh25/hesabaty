@@ -20,7 +20,7 @@ from kivy.uix.textinput import TextInput
 
 
 APP_DIR = Path(__file__).resolve().parent
-DB_PATH = None
+DB_PATH = Path(App.get_running_app().user_data_dir if App.get_running_app() else APP_DIR) / "accounting.db"
 
 
 class Database:
