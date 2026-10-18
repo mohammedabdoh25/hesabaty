@@ -66,6 +66,12 @@ jobs:
           python -m pip install "Cython<3" "buildozer==1.5.0"
           buildozer --version
 
+      - name: Clean build cache and old outputs
+        run: |
+          rm -rf .buildozer bin
+          rm -rf ~/.buildozer
+          echo "Cleaned .buildozer, bin, and ~/.buildozer"
+
       - name: Validate project files
         run: |
           test -f main.py
